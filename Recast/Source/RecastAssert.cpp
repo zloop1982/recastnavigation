@@ -16,38 +16,20 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-#ifndef SLIDESHOW_H
-#define SLIDESHOW_H
+#include "RecastAssert.h"
 
-#include "Filelist.h"
+#ifndef NDEBUG
 
-class SlideShow
+static rcAssertFailFunc* sRecastAssertFailFunc = 0;
+
+void rcAssertFailSetCustom(rcAssertFailFunc *assertFailFunc)
 {
-	FileList m_files;
-	char m_path[256];
+	sRecastAssertFailFunc = assertFailFunc;
+}
 
-	int m_width;
-	int m_height;
-	unsigned int m_texId;
+rcAssertFailFunc* rcAssertFailGetCustom()
+{
+	return sRecastAssertFailFunc;
+}
 
-	void purgeImage();
-	bool loadImage(const char* path);
-
-	bool m_showSlides;
-	bool m_showCurSlide;
-	float m_slideAlpha;
-	int m_curSlide;
-	int m_nextSlide;
-	
-public:
-	SlideShow();
-	~SlideShow();
-
-	bool init(const char* path);
-	void nextSlide();
-	void prevSlide();
-	void setSlide(int n);
-	void updateAndDraw(float dt, const float w, const float h);
-};
-
-#endif // SLIDESHOW_H
+#endif
